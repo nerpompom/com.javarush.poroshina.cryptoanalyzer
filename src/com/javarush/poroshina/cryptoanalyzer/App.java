@@ -3,9 +3,15 @@ package com.javarush.poroshina.cryptoanalyzer;
 public class App {
     public static void main(String[] args) {
 
-        Cipher cipher = Cipher.getInstance();
+        CaesarCipher caesarCipher = CaesarCipher.getInstance();
+        BruteForce bruteForce = BruteForce.getInstance();
 
-       // System.out.println(cipher.encrypt("абвгд", 4));
+
+//        String s = caesarCipher.encrypt("абф5g", 8);
+//        System.out.println(s);
+//        String s1 = caesarCipher.decrypt("зиь5g", 8);
+//        System.out.println(s1);
+//        bruteForce.findShift("зиь5g");
 
         Menu menu = Menu.getInstance();
 

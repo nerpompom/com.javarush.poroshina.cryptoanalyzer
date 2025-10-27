@@ -13,16 +13,14 @@ public class Menu {
         return instance;
     }
 
-    //Метод, с которого начинается работа с программой
     public void start() {
         System.out.println("Hello! Let's start");
+
         info();
     }
 
-    //Метод для выбора режима работы
     public void selector(Integer number) {
         switch (number) {
-            //Вызов справки
             case 0 -> info();
             //Путь расшифровки файла
             case 1 -> System.out.println("ENCRYPT FILE");
@@ -43,7 +41,7 @@ public class Menu {
     }
 
     public void workWithConsole () {
-        System.out.println("Введите число от 0 до 4");
+        System.out.println("Enter a number between 0 and 4");
 
         Scanner scanner = new Scanner(System.in);
 
@@ -57,7 +55,7 @@ public class Menu {
             }
 
         } else {
-            System.out.println("Это не число");
+            System.out.println("This is not a number");
             workWithConsole();
         }
     }
