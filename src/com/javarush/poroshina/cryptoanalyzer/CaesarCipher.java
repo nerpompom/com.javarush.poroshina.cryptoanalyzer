@@ -1,16 +1,11 @@
 package com.javarush.poroshina.cryptoanalyzer;
 
-import java.util.HashMap;
 
-public class CaesarCipher {
+public class CaesarCipher extends Cipher {
 
-    private final char[] alphabet;
-    private final HashMap<Character, Integer> alphabetPositions;
     private static CaesarCipher instance;
 
-    public CaesarCipher(char[] alphabet) {
-        this.alphabet = alphabet;
-        alphabetPositions = new HashMap<Character, Integer>();
+    public CaesarCipher() {
         for (int i = 0; i < alphabet.length; i++) {
             alphabetPositions.put(alphabet[i], i);
         }
@@ -18,53 +13,58 @@ public class CaesarCipher {
 
     public static CaesarCipher getInstance() {
         if (instance == null) {
-            instance = new CaesarCipher(new char[]{'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'к',
-                    'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф',
-                    'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я',
-                    '.', ',', '\"', ':', '!', '?', '-', ' '});
+            instance = new CaesarCipher();
         }
         return instance;
     }
 
-    public String encrypt(String text, int shift) {
+    public void encrypt(String text, int shift) {
 
         char[] textArray = text.toCharArray();
 
         for (int i = 0; i < textArray.length; i++) {
-            if (alphabetPositions.containsKey(textArray[i])) {
-                int oldPosition = alphabetPositions.get(textArray[i]);
+            char currentChar = textArray[i];
+            char lowerChar = Character.toLowerCase(currentChar);
+
+            if (alphabetPositions.containsKey(lowerChar)) {
+                int oldPosition = alphabetPositions.get(lowerChar);
                 int newPosition = (oldPosition + shift) % alphabet.length;
 
                 if (newPosition < 0) {
                     newPosition += alphabet.length;
                 }
 
-                textArray[i] = alphabet[newPosition];
+                char encryptedChar = alphabet[newPosition];
+                textArray[i] = Character.isUpperCase(currentChar) ? Character.toUpperCase(encryptedChar) : encryptedChar;
             }
-
         }
+
         String encryptedText = new String(textArray);
-        return encryptedText;
+        FileManager.writeFile(encryptedText);
     }
 
-    public String decrypt(String encryptedText, int shift) {
+    public void decrypt(String encryptedText, int shift) {
         char[] textArray = encryptedText.toCharArray();
 
         for (int i = 0; i < textArray.length; i++) {
-            if (alphabetPositions.containsKey(textArray[i])) {
-                int oldPosition = alphabetPositions.get(textArray[i]);
+            char currentChar = textArray[i];
+            char lowerChar = Character.toLowerCase(currentChar);
+
+            if (alphabetPositions.containsKey(lowerChar)) {
+                int oldPosition = alphabetPositions.get(lowerChar);
                 int newPosition = (oldPosition - shift) % alphabet.length;
 
                 if (newPosition < 0) {
                     newPosition += alphabet.length;
                 }
 
-                textArray[i] = alphabet[newPosition];
+                char decryptedChar = alphabet[newPosition];
+                textArray[i] = Character.isUpperCase(currentChar) ? Character.toUpperCase(decryptedChar) : decryptedChar;
             }
-
         }
+
         String decryptedText = new String(textArray);
-        return decryptedText;
+        FileManager.writeFile(decryptedText);
     }
 
 }

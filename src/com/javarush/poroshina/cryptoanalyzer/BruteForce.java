@@ -1,16 +1,10 @@
 package com.javarush.poroshina.cryptoanalyzer;
 
-import java.util.HashMap;
+public class BruteForce extends Cipher {
 
-public class BruteForce {
-
-    private final char[] alphabet;
-    private final HashMap<Character, Integer> alphabetPositions;
     private static BruteForce instance;
 
-    public BruteForce(char[] alphabet) {
-        this.alphabet = alphabet;
-        alphabetPositions = new HashMap<Character, Integer>();
+    public BruteForce() {
         for (int i = 0; i < alphabet.length; i++) {
             alphabetPositions.put(alphabet[i], i);
         }
@@ -18,10 +12,7 @@ public class BruteForce {
 
     public static BruteForce getInstance() {
         if (instance == null) {
-            instance = new BruteForce(new char[]{'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'к',
-                    'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф',
-                    'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я',
-                    '.', ',', '\"', ':', '!', '?', '-', ' '});
+            instance = new BruteForce();
         }
         return instance;
     }
@@ -29,31 +20,33 @@ public class BruteForce {
     public void findShift(String encryptedText) {
 
         for (int i = 0; i < alphabet.length; i++) {
-            String decryptedText = decrypt(encryptedText, i);
+            decrypt(encryptedText, i);
             //System.out.println("Сдвиг: " + i + ", Расшифрованный текст: " + decryptedText);
         }
     }
 
 
-
-
-    public String decrypt(String encryptedText, int shift) {
+    public void decrypt(String encryptedText, int shift) {
         char[] textArray = encryptedText.toCharArray();
 
         for (int i = 0; i < textArray.length; i++) {
-            if (alphabetPositions.containsKey(textArray[i])) {
-                int oldPosition = alphabetPositions.get(textArray[i]);
-                int newPosition = (oldPosition - shift) % alphabet.length;
+            char currentChar = textArray[i];
+            char lowerChar = Character.toLowerCase(currentChar);
+
+            if (alphabetPositions.containsKey(lowerChar)) {
+                int oldPosition = alphabetPositions.get(lowerChar);
+                int newPosition = (oldPosition + shift) % alphabet.length;
 
                 if (newPosition < 0) {
                     newPosition += alphabet.length;
                 }
 
-                textArray[i] = alphabet[newPosition];
+                char decryptedChar = alphabet[newPosition];
+                textArray[i] = Character.isUpperCase(currentChar) ? Character.toUpperCase(decryptedChar) : decryptedChar;
             }
-
         }
+
         String decryptedText = new String(textArray);
-        return decryptedText;
+        FileManager.writeFile(decryptedText);
     }
 }

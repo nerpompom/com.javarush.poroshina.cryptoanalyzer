@@ -22,12 +22,12 @@ public class Menu {
     public void selector(Integer number) {
         switch (number) {
             case 0 -> info();
-            //Путь расшифровки файла
-            case 1 -> System.out.println("ENCRYPT FILE");
             //Путь шифровки файла
-            case 2 -> System.out.println("DECRYPT FILE");
+            case 1 -> CaesarCipher.getInstance().encrypt(FileManager.getFile(), FileManager.getShift());
+            //Путь расшифровки файла
+            case 2 -> CaesarCipher.getInstance().decrypt(FileManager.getFile(), FileManager.getShift());
             //Путь взлома файла
-            case 3 -> System.out.println("BRUTE FORCE");
+            case 3 -> BruteForce.getInstance().findShift(FileManager.getFile());
             //Выход из программы
             case 4 -> exit();
         }
