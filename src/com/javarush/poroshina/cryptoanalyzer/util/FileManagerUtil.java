@@ -1,5 +1,8 @@
-package com.javarush.poroshina.cryptoanalyzer;
+package com.javarush.poroshina.cryptoanalyzer.util;
 
+
+import com.javarush.poroshina.cryptoanalyzer.constants.AppConstants;
+import com.javarush.poroshina.cryptoanalyzer.service.ValidatorService;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,34 +13,30 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
-public class FileManager {
-
-    private static final String MAIN_PATH = "./src/com/javarush/poroshina/cryptoanalyzer/files/";
+public class FileManagerUtil {
 
     public static String getFile() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the path to the .txt file");
+        System.out.println(AppConstants.ENTER_THE_PATH);
         String filePath = scanner.nextLine();
 
-        return readFile(Validator.isValidPath(filePath));
+        return readFile(ValidatorService.isValidPath(filePath));
     }
 
     public static int getShift() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter a shift (number from 0 to 40)");
+        System.out.println(AppConstants.ENTER_A_SHIFT);
 
         if (!scanner.hasNextInt()) {
-            System.out.println("This is not a number");
+            System.out.println(AppConstants.NOT_A_NUMBER_ERROR);
             getShift();
         }
-
         int shift = scanner.nextInt();
-        Validator.isValidShift(shift);
+        ValidatorService.isValidShift(shift);
         return shift;
     }
 
     public static String readFile(Path path) {
-        //Может переделать на чтение байт, а потом преобразование в строку?
         try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
             StringBuilder text = new StringBuilder();
             String line;
@@ -47,9 +46,8 @@ public class FileManager {
             }
             return text.toString();
         } catch (IOException e) {
-            throw new RuntimeException("Error reading file");
+            throw new RuntimeException(AppConstants.READING_FILE_ERROR);
         }
-
     }
 
     public static void writeFile(String text) {
@@ -59,17 +57,17 @@ public class FileManager {
             try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
                 writer.write(text);
             }
-            System.out.println("File recorded: " + path);
+            System.out.println(AppConstants.RECORD_FILE + path);
         } catch (IOException e) {
-            throw new RuntimeException("Writing file error");
+            throw new RuntimeException(AppConstants.WRITING_FILE_ERROR);
         }
     }
 
     private static Path generateFileName() {
         int counter = 1;
         while (true) {
-            String fileName = "file_" + counter + ".txt";
-            Path path = Paths.get(MAIN_PATH, fileName);
+            String fileName = AppConstants.FILE + counter + AppConstants.TXT_FORMAT;
+            Path path = Paths.get(AppConstants.MAIN_PATH, fileName);
             isDirectoryExist(path.getParent());
             if (!Files.exists(path)) {
                 return path;
@@ -83,10 +81,8 @@ public class FileManager {
             try {
                 Files.createDirectories(folder);
             } catch (IOException e) {
-                throw new RuntimeException("Creating folder error");
+                throw new RuntimeException(AppConstants.CREATING_FOLDER_ERROR);
             }
         }
     }
-
-
 }
