@@ -69,7 +69,6 @@ public class FileManagerUtil {
             String fileName = AppConstants.FILE + counter + AppConstants.TXT_FORMAT;
             Path currentFolder= Paths.get(".").toRealPath();
             Path path = currentFolder.resolve(fileName);
-            //Path path = Paths.get(AppConstants.MAIN_PATH, fileName);
             isDirectoryExist(path.getParent());
             if (!Files.exists(path)) {
                 return path;
