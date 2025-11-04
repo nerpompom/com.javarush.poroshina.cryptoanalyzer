@@ -2,8 +2,15 @@ package com.javarush.poroshina.cryptoanalyzer.service;
 
 import com.javarush.poroshina.cryptoanalyzer.util.FileManagerUtil;
 
-public class CaesarCipherService extends CipherService {
+import java.util.HashMap;
 
+public class CaesarCipherService {
+
+    private final char[] alphabet = new char[]{'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'к',
+            'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф',
+            'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я',
+            '.', ',', '\"', ':', '!', '?', '-', ' '};
+    protected final HashMap<Character, Integer> alphabetPositions = new HashMap<Character, Integer>();
     private static CaesarCipherService instance;
 
     public CaesarCipherService() {

@@ -6,7 +6,10 @@ import com.javarush.poroshina.cryptoanalyzer.util.FileManagerUtil;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class ValidatorService extends CipherService {
+public class ValidatorService {
+
+    private static final int MAX_SHIFT = 40;
+    private static final int MIN_SHIFT = 1;
 
     public static Path isValidPath(String filePath) {
         if (!filePath.endsWith(AppConstants.TXT_FORMAT)) {
