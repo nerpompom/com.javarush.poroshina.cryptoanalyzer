@@ -23,5 +23,5 @@ public interface AppConstants {
     String WRITING_FILE_ERROR = "Writing file error";
     String CREATING_FOLDER_ERROR = "Creating folder error";
 
-    String MAIN_PATH = "./src/com/javarush/poroshina/cryptoanalyzer/files/";
+    //String MAIN_PATH = "./src/com/javarush/poroshina/cryptoanalyzer/files/";
 }

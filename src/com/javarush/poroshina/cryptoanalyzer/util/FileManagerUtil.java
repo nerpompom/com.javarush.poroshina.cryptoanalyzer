@@ -63,11 +63,13 @@ public class FileManagerUtil {
         }
     }
 
-    private static Path generateFileName() {
+    private static Path generateFileName() throws IOException {
         int counter = 1;
         while (true) {
             String fileName = AppConstants.FILE + counter + AppConstants.TXT_FORMAT;
-            Path path = Paths.get(AppConstants.MAIN_PATH, fileName);
+            Path currentFolder= Paths.get(".").toRealPath();
+            Path path = currentFolder.resolve(fileName);
+            //Path path = Paths.get(AppConstants.MAIN_PATH, fileName);
             isDirectoryExist(path.getParent());
             if (!Files.exists(path)) {
                 return path;
